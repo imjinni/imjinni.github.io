@@ -43,7 +43,9 @@ layout: default
 
       {% include my-post_pagination.html %}
 
+      <!--
       {% if page.share %}{% include my-social-share.html classes="page__share page__share-top" %}{% endif %}
+      -->
 
       <section class="page__content" itemprop="text">
         {% if page.toc-top %}
@@ -77,9 +79,9 @@ layout: default
       </section>
 
       <p></p>
-
-<div>
-<script src="https://giscus.app/client.js"
+ 
+      <div>
+      <script src="https://giscus.app/client.js"
         data-repo="imjinni/imjinni.github.io"
         data-repo-id="R_kgDOJZgDHQ"
         data-category="[ENTER CATEGORY NAME HERE]"
@@ -93,20 +95,25 @@ layout: default
         data-lang="ko"
         crossorigin="anonymous"
         async>
-</script>
-</div>
+      </script>
+      </div>
 
       <p></p>
+      
       {% include ads/google/horizontal_ad.html %}
-
+      <!--
       <footer class="page__meta">
+
         {% if site.data.ui-text[site.locale].meta_label %}
+
           <h4 class="page__meta-title"><i class="far fa-file-alt"></i> {{ site.data.ui-text[site.locale].meta_label }}</h4>
+
         {% endif %}
         {% include page__taxonomy.html %}
         {% include page__date.html %}
-      </footer>
 
+      </footer>
+      -->
       {% if page.share %}{% include social-share.html %}{% endif %}
 
       {% include my-post_pagination.html %}
@@ -119,8 +126,7 @@ layout: default
 
   {% comment %}<!-- only show related on a post page when `related: true` -->{% endcomment %}
   {% if page.id and page.related and site.related_posts.size > 0 %}
-  
-  <div class="page__related">
+    <div class="page__related">
       <h4 class="page__related-title">{{ site.data.ui-text[site.locale].related_label | default: "You May Also Enjoy" }}</h4>
       <div class="grid__wrapper">
         {% for post in site.related_posts limit:4 %}
