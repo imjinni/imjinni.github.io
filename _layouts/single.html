@@ -43,9 +43,7 @@ layout: default
 
       {% include my-post_pagination.html %}
 
-      <!--
       {% if page.share %}{% include my-social-share.html classes="page__share page__share-top" %}{% endif %}
-      -->
 
       <section class="page__content" itemprop="text">
         {% if page.toc-top %}
@@ -80,28 +78,7 @@ layout: default
 
       <p></p>
  
-      <div>
-      <script src="https://giscus.app/client.js"
-        data-repo="imjinni/imjinni.github.io"
-        data-repo-id="R_kgDOJZgDHQ"
-        data-category="[ENTER CATEGORY NAME HERE]"
-        data-category-id="[ENTER CATEGORY ID HERE]"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="light"
-        data-lang="ko"
-        crossorigin="anonymous"
-        async>
-      </script>
-      </div>
-
-      <p></p>
-      
       {% include ads/google/horizontal_ad.html %}
-      <!--
       <footer class="page__meta">
 
         {% if site.data.ui-text[site.locale].meta_label %}
@@ -113,7 +90,6 @@ layout: default
         {% include page__date.html %}
 
       </footer>
-      -->
       {% if page.share %}{% include social-share.html %}{% endif %}
 
       {% include my-post_pagination.html %}
