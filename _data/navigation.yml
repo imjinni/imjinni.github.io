@@ -59,6 +59,13 @@ main-sidebar:
         url: "/embedded/evb/bbb/"
       - title: "Khadas Series"
         url: "/embedded/evb/khadas/"
+    - title: "Embedded Linux"
+      url: "/embedded/embedded-linux/"
+      children:
+      - title: "Kernel"
+        url: "/embedded/embedded-linux/kernel/"
+      - title: "Linux Device Driver"
+        url: "/embedded/embedded-linux/linux-device-driver/"
   - title: "Machine Learning"
     url: "/ml/"
     children:
