@@ -37,7 +37,3 @@ last_modified_at: "2023-07-24 14:16:00 +0900"
 | S_IWUGO     | (S_IWUSR\|S_IWGRP\|S_IWOTH) | owner, group, other에 대한 write 권한 허용  |                                                          |
 | S_IXUGO     | (S_IXUSR\|S_IXGRP\|S_IXOTH) | owner, group, other에 대한 excute 권한 허용 |                                                          |
 
-
-
-
-
