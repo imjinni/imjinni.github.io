@@ -12,11 +12,11 @@ last_modified_at: "2023-07-24 14:17:00 +0900"
 
 이 문서는 라즈베리파이의 리눅스 커널 컴파일 과정을 요약한다.
 
-여기서 커널 컴파일을 하는 목적은 컴파일 자체가 아니라 디바이스 드라이버와 커널을 공부하기 위한 셋팅을 하기 위해서이다. 추후 추가 될 수는 있겠으나 보드 상에서 Native Compile을 기준으로 작업해 각종 설정을 최소화 한다.
+여기서 커널 컴파일을 하는 목적은 컴파일이 아니라 디바이스 드라이버와 커널을 공부하기 위한 셋팅을 하기 위해서이다. 추가 될 수는 있겠으나 보드 상에서 Native Compile을 기준으로 작업해 각종 설정을 최소화 한다.
 
-기본 참고 사항은 Raspberry pi Document의 [Reference](https://www.raspberrypi.com/documentation/computers/linux_kernel.html)를 따른다.
+기본 참고 사항은 Raspberry Pi Document의 [Reference](https://www.raspberrypi.com/documentation/computers/linux_kernel.html)를 따른다.
 
-타겟 보드는 RPi 4B, 커널은 5.10을 기준의로 한다.
+타겟 보드는 RPi 4B, 커널은 5.10을 기준으로 한다.
 
 4B는 현재 최신의 보드라 사용했고, 커널은 기본 참고 소스들이 이 버전 커널에서 빌드 가능한 상태이며 현재 실무에 사용중인 버전이라 선택했다.
 
@@ -121,3 +121,5 @@ drwxr-xr-x 11 root root   4096 Aug 14 17:44 kernel
 -rw-r--r--  1 root root 321553 Aug 14 17:44 modules.symbols.bin
 lrwxrwxrwx  1 root root     25 Aug 14 17:44 source -> /home/pi/smb/linux-5.10.y
 ```
+
+라즈베리파이에서 진행한 *Native Kernel Compile*의 요약을 마친다.
