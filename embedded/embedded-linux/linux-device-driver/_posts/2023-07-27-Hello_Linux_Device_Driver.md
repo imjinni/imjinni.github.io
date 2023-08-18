@@ -168,6 +168,8 @@ module_init(hello_init);
 module_exit(hello_exit);
 ```
 
+AUTHOR와 DESCRIPTION 정보, `priv`로 모듈 자체에 버전을 추가했다. 앞으로 이 버전을 다른 테스트의 skeleton으로 사용하도록 하겠다.
+
 ## hello\_v03
 
 ```c
@@ -258,9 +260,50 @@ module_init(hello_init);
 module_exit(hello_exit);
 ```
 
+모듈의 정보를 보면 parameter 설정 내용을 확인 할 수 있다.
 
+```
+$ modinfo hello_module.ko
+filename:       /home/pi/smb/wrk-drv/ido/hello_module/hello_v03/hello_module.ko
+priv:           kernel hello module v03
+description:    hello module
+author:         imjinni@gmail.com
+license:        GPL
+srcversion:     FA8DA21A61E4CD985689E53
+depends:
+name:           hello_module
+vermagic:       5.10.110-v8+ SMP preempt mod_unload modversions aarch64
+parm:           var_short:Short Integer (short)
+parm:           var_int:Integer (int)
+parm:           var_long:Long Integer (long)
+parm:           var_string:String (charp)
+parm:           var_bool:Bool (bool)
+parm:           var_int_array:Integer Array (array of int)
+```
 
-### Module Parameter 처리
+```
+$ sudo insmod hello_module.ko var_short=444 var_int=-255 var_long=88888 var_string="ABCDEFG" var_bool=0 var_int_array=777,888
+$ sudo rmmod hello_module
+```
+
+모듈 삽입과 제거를 실행한 후 내용을 확인하면 입력한 파라미터 내용을 확인 할 수 있다.
+
+```
+$ dmesg
+[21330.958094] [imjinni] hello_init():68 HELLO
+[21330.958105]     test_init_data is [0xdeadbeef]
+[21330.958109] [imjinni] hello_print_params():48
+[21330.958113]     var_short           ==> 444
+[21330.958117]     var_int             ==> -255
+[21330.958121]     var_long            ==> 88888
+[21330.958124]     var_string          ==> ABCDEFG
+[21330.958128]     var_bool            ==> false
+
+[21330.958134]     var_int_array count ==> 2
+[21330.958138]     var_int_array[0] = 777
+[21330.958141]     var_int_array[1] = 888
+[21349.886063] [imjinni] hello_exit():79 BYE
+```
 
 `S_IRUSR`과 같은 상수는 [stat.h](https://elixir.bootlin.com/linux/v5.10.110/source/include/uapi/linux/stat.h)에서 찾을 수 있다.
 
@@ -286,7 +329,119 @@ module_exit(hello_exit);
 
 ## hello\_v04
 
-*hello\_v03*의 파일을 나누었다. 별다른 설명은 없고 코드와 Makefile을 확인하면 된다. 너무 큰 드라이버는 이렇게도 할 수 있다.
+*hello\_v03*의 파일을 나누었다. 별다른 설명은 없다. 코드와 Makefile을 확인하면 된다. 너무 큰 소스 파일은 나누어 작성 할 수 있다. 테스트에서는 이렇게 나눌 일은 없지 싶다.
+
+*Makefile*의 `obj-m := hello.o`가 바뀌어 `hello.ko` 파일로 만들어 진다.
+
+처음이라 코드 전체를 나열하고 명령으로 확인했다. 다른 테스트들은 일부만 적도록 하겠다.
+
+```c
+#include <linux/printk.h>
+
+#include <linux/kernel.h>
+#include <linux/moduleparam.h>
+#include <linux/stat.h>
+
+#define S_IRWUG		(S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
+#define S_IRWUSR	(S_IRUSR | S_IWUSR)
+#define S_IRGO		(S_IRGRP | S_IROTH)
+
+static short int var_short = 1;
+static int var_int = 2;
+static long int var_long = 3;
+static char *var_string = "unknown";
+static int var_int_array[2] = { 90, 91 };
+static int array_count = 0;
+static bool var_bool = false;
+
+module_param(var_short, short, S_IRWUG);
+MODULE_PARM_DESC(var_short, "Short Integer");
+module_param(var_int, int, S_IRWUSR | S_IRGO);
+MODULE_PARM_DESC(var_int, "Integer");
+module_param(var_long, long, S_IRUSR);
+MODULE_PARM_DESC(var_long, "Long Integer");
+module_param(var_string, charp, 0000);
+MODULE_PARM_DESC(var_string, "String");
+module_param(var_bool, bool, S_IRWUG);
+MODULE_PARM_DESC(var_bool, "Bool");
+
+module_param_array(var_int_array, int, &array_count, 0000);
+MODULE_PARM_DESC(var_int_array, "Integer Array");
+
+int hello_print_params(void)
+{
+	int i;
+
+	pr_info("[imjinni] %s():%d\n", __func__, __LINE__);
+	pr_info("    var_short           ==> %hd\n", var_short);
+	pr_info("    var_int             ==> %d\n", var_int);
+	pr_info("    var_long            ==> %ld\n", var_long);
+	pr_info("    var_string          ==> %s\n", var_string);
+	pr_info("    var_bool            ==> %s\n", var_bool ? "true" : "false");
+
+	pr_info("\n");
+	pr_info("    var_int_array count ==> %d\n", array_count);
+
+	for (i = 0; i < ARRAY_SIZE(var_int_array); i++)
+	{
+		pr_info("    var_int_array[%d] = %d\n", i, var_int_array[i]);
+	}
+
+	return 0;
+}
+```
+
+```c
+#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/printk.h>
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("imjinni@gmail.com");
+MODULE_DESCRIPTION("hello module");
+
+// MODULE_INFO(intree, "Y");
+MODULE_INFO(priv, "kernel hello module v03");
+
+
+static int test_init_data __initdata = 0xdeadbeef;
+
+extern int hello_print_params(void);
+
+static int __init hello_init(void)
+{
+	pr_info("[imjinni] %s():%d HELLO\n", __func__, __LINE__);
+
+	pr_info("    test_init_data is [0x%x]\n", test_init_data);
+
+	hello_print_params();
+
+	return 0;
+}
+
+static void __exit hello_exit(void)
+{
+	pr_info("[imjinni] %s():%d BYE\n", __func__, __LINE__);
+
+	return;
+}
+
+module_init(hello_init);
+module_exit(hello_exit);
+```
+
+```makefile
+obj-m := hello.o
+hello-objs := hello_module.o param.o
+
+KDIR := /lib/modules/$(shell uname -r)/build
+
+default:
+	make -C$(KDIR) M=$(shell pwd) modules
+
+clean:
+	make -C$(KDIR) M=$(shell pwd) clean
+```
 
 ## insmod 과정
 
