@@ -26,6 +26,11 @@ last_modified_at: "2023-07-24 14:16:00 +0900"
 - 리눅스 기본 명령/유틸리티 사용법(ls, rm, mv, cat, grep, vim 등)
 - 약간의 bash 스크립트 작성법
 
+### Target Board
+
+- Raspberry pi 4B
+- Khadas VIM4 with NPU
+
 ## 커널 빌드
 
 우선 커널을 컴파일해 시스템을 준비한다.
