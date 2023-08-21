@@ -10,6 +10,24 @@ last_modified_at: "2023-07-24 14:16:00 +0900"
 
 ## 시작하기 전에...
 
+### References
+
+- Linux Device Drivers, Third Edition - Jonathan Corbet, Alessandro Rubini, and Greg Kroah-Hartman - O'Reilly
+- [Linux 커널 모듈 프로그래밍 가이드(5.x)](https://wikidocs.net/book/9521)
+- Linux Device Driver Development - John Madieu - Packt Publishing
+- IT EXPERT, 리눅스 디바이스 드라이버 - 유영창 - 한빛미디어
+
+### 선수지식
+
+- C Language
+- Makefile 사용법 조금
+  - [Makefile 예제와 작성 방법 및 기본 패턴](https://www.tuwlab.com/ece/27193)
+  - [Makefile 만들기](https://modoocode.com/311)
+- 리눅스 기본 명령/유틸리티 사용법(ls, rm, mv, cat, grep, vim 등)
+- 약간의 bash 스크립트 작성법
+
+## 커널 빌드
+
 우선 커널을 컴파일해 시스템을 준비한다.
 
 이 [Link](https://imjinni.github.io/embedded/embedded-linux/kernel/Raspberry_Pi_Linux_Kernel_Compile/)를 참조해 준비하면 된다.
@@ -442,7 +460,3 @@ default:
 clean:
 	make -C$(KDIR) M=$(shell pwd) clean
 ```
-
-## insmod 과정
-
-## rmmod 과정
